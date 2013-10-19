@@ -49,9 +49,11 @@ class TaskController extends \Controller
 
         $task->setName($data["name"]);
         unset($data["name"]);
-
-        $task->setDescription($data["description"]);
-        unset($data["description"]);
+        if (isset($data["description"]))
+        {
+            $task->setDescription($data["description"]);
+            unset($data["description"]);
+        }
 
         unset($data["owner"]);
         unset($data["id"]);

@@ -6,7 +6,7 @@ define([
 ], function ($, _, Backbone, Task) {
     var Collection = Backbone.Collection.extend({
         model: Task,
-        url: "/TaskManagement/Tasks"
+        url: "/TaskManagement/Task"
     });
 
     return Collection;
