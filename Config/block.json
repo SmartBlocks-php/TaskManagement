@@ -15,12 +15,12 @@
     "apps": [
         {
             "name": "TaskViewer",
-            "token": "calendar",
-            "description": "Your calendar",
+            "token": "task_viewer",
+            "description": "Your tasks",
             "link": "#task_viewer",
             "logo_url": "/images/icons/user.png",
-            "block_token": "time",
-            "entry_point": "launch_tasks_viewer",
+            "block_token": "task_management",
+            "entry_point": "launch_viewer",
             "routing": {
 
             }

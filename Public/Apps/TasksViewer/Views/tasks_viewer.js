@@ -10,10 +10,11 @@ define([
         initialize: function () {
             var base = this;
         },
-        init: function () {
+        init: function (app) {
             var base = this;
-
+            base.app = app;
             base.render();
+            base.registerEvents();
         },
         render: function () {
             var base = this;
