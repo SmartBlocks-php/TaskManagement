@@ -1,8 +1,61 @@
 .tasks_viewer {
-  .tasks_list {
-    min-height: 50px;
+  .events_list {
+    min-height: 200px;
     &.element_over {
-      background: red;
+      background: rgba(255, 240, 151, 0.48);
     }
+
+  }
+
+  .events_container {
+    margin-left: 320px;
+
+  }
+
+  .header {
+    height: 50px;
+    line-height: 50px;
+    .page_title {
+      font-size: 30px;
+    }
+  }
+
+
+  .add_task_button {
+    display: block;
+    float:right;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-right: 5px;
+    margin-top: 8px;
+    background: url(/TaskManagement/Resources/plus.png);
+    &:hover {
+      background: url(/TaskManagement/Resources/plus.png) 0 15px;
+    }
+  }
+
+  .task_name {
+    width: 220px;
+    margin-top: 5px;
+    margin-left: 41px;
+    padding: 5px;
+    background: rgba(255,255,255,0.5);
+    border: none;
+  }
+
+  .tasks_container {
+    float: left;
+    width: 300px;
+  }
+
+  .tasks_list {
+    
+  }
+
+  .date_events {
+    float:left;
+    width: 250px;
+    margin-right: 20px;
   }
 }

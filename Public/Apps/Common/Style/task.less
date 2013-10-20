@@ -9,4 +9,35 @@
     padding-left: 0px;
     border-left: 5px red solid;
   }
+
+  .tick {
+    display: block;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-left: 5px;
+    background: url(/TaskManagement/Resources/tick.png) 0 0;
+    float: left;
+    &.checked, &:hover {
+      background: url(/TaskManagement/Resources/tick.png) 0 15px;
+    }
+  }
+  .delete_button {
+    display: block;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-right: 5px;
+    background: url(/TaskManagement/Resources/cross.png) 0 0;
+    float: right;
+    &:hover {
+      background: url(/TaskManagement/Resources/cross.png) 0 15px;
+    }
+  }
+
+  .name {
+    padding-left: 20px;
+  }
 }

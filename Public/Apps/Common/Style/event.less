@@ -1,0 +1,29 @@
+.event_viewer {
+  cursor: pointer;
+
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px gray solid;
+
+
+  .clock {
+    display: block;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-top: 8px;
+    margin-right: 10px;
+    float: left;
+    background: url(/TaskManagement/Resources/clock.png);
+
+  }
+
+  padding-left: 10px;
+  &:hover {
+    padding-left: 5px;
+    border-left: 5px red solid;
+    .clock {
+      background: url(/TaskManagement/Resources/clock.png) 0 15px;
+    }
+  }
+}

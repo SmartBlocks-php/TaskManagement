@@ -1,0 +1,9 @@
+<div>
+    <a href="javascript:void(0);" class="clock"></a><span class="name"><%= event.get('name') %></span>
+    <% if (!event.get('all_day')) { %>
+    <span>
+        <%= (start.getHours() < 10 ? '0' : '') + start.getHours() %>:<%= (start.getMinutes() < 10 ? '0' : '') + start.getMinutes() %> -
+        <%= (end.getHours() < 10 ? '0' : '') + end.getHours() %>:<%= (end.getMinutes() < 10 ? '0' : '') + end.getMinutes() %>
+    </span>
+    <% } %>
+</div>

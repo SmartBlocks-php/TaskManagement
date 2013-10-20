@@ -4,8 +4,9 @@ define([
     'backbone',
     'text!../Templates/tasks_viewer.html',
     '../../Common/Views/task',
+    '../../Common/Views/event',
     'jqueryui'
-], function ($, _, Backbone, tasks_viewer_tpl, TaskView) {
+], function ($, _, Backbone, tasks_viewer_tpl, TaskView, EventView) {
     var View = Backbone.View.extend({
         tagName: "div",
         className: "tasks_viewer",
@@ -25,27 +26,82 @@ define([
             base.$el.html(template);
 
             base.renderTasks();
-            base.$el.find(".tasks_list").droppable({
-                accept: ".task",
+            base.$el.find(".events_list").droppable({
+                accept: ".task, .event_viewer",
                 hoverClass: "element_over",
                 drop: function (event, ui) {
-                    var task = SmartBlocks.Blocks.TaskManagement.Data.tasks.get(ui.draggable.attr('data-id'));
-                    var event = new SmartBlocks.Blocks.Time.Models.Event();
-                    event.set("name", task.get('name'));
-                    event.set("description", "A task to do");
-                    var now = new Date();
-                    var end = new Date(now);
-                    end.setHours(end.getHours() + 1);
-                    event.setStart(now);
-                    event.setEnd(end);
-                    event.set("all_day", true);
-                    SmartBlocks.Blocks.Time.Data.events.add(event);
-                    event.save({}, {
-                        success: function () {
-                            task.addEvent(event);
-                            base.renderTasks();
+                    var recipient = $(this);
+                    if (ui.draggable.hasClass("task")) {
+
+                        var task = SmartBlocks.Blocks.TaskManagement.Data.tasks.get(ui.draggable.attr('data-id'));
+                        if (!task) {
+                            task = SmartBlocks.Blocks.TaskManagement.Data.tasks.models[ui.draggable.attr('data-index')];
                         }
-                    });
+                        if (!task) {
+                            console.log('could not find task');
+                            return;
+                        }
+                        var event = new SmartBlocks.Blocks.Time.Models.Event();
+                        event.set("name", task.get('name'));
+                        event.set("description", "A task to do");
+                        var now = new Date();
+                        if (recipient.hasClass("tomorrow_events")) {
+                            now.setDate(now.getDate() + 1);
+                        }
+                        if (recipient.hasClass("later_events")) {
+                            now.setDate(now.getDate() + 2);
+                        }
+
+                        var end = new Date(now);
+                        end.setHours(end.getHours() + 1);
+                        event.setStart(now);
+                        event.setEnd(end);
+                        event.set("all_day", true);
+                        SmartBlocks.Blocks.Time.Data.events.add(event);
+                        event.save({}, {
+                            success: function () {
+                                task.addEvent(event);
+                                base.renderTasks();
+                            }
+                        });
+                    }
+                    if (ui.draggable.hasClass('event_viewer')) {
+                        var event = SmartBlocks.Blocks.Time.Data.events.get(ui.draggable.attr('data-id'));
+                        if (!event) {
+                            event = SmartBlocks.Blocks.Time.Data.events.models[ui.draggable.attr('data-index')];
+                        }
+
+                        var now = new Date();
+                        if (event) {
+                            if (recipient.hasClass("today_events")) {
+                                var date = event.getStart();
+                                date.setDate(now.getDate());
+                                var end = event.getEnd();
+                                end.setDate(now.getDate());
+                                event.setStart(date);
+                                event.setEnd(end);
+                            }
+                            if (recipient.hasClass("tomorrow_events")) {
+                                var date = event.getStart();
+                                date.setDate(now.getDate() + 1);
+                                var end = event.getEnd();
+                                end.setDate(now.getDate() + 1);
+                                event.setStart(date);
+                                event.setEnd(end);
+                            }
+                            if (recipient.hasClass("later_events")) {
+                                var date = event.getStart();
+                                date.setDate(now.getDate() + 2);
+                                var end = event.getEnd();
+                                end.setDate(now.getDate() + 2);
+                                event.setStart(date);
+                                event.setEnd(end);
+                            }
+                            event.set("all_day", true);
+                            event.save();
+                        }
+                    }
+
 
                 }
             });
@@ -53,42 +109,50 @@ define([
         renderTasks: function () {
             var base = this;
             var tasks = SmartBlocks.Blocks.TaskManagement.Data.tasks;
+            base.$el.find(".events_list").html("");
             base.$el.find(".tasks_list").html("");
+
             for (var k in tasks.models) {
                 var task = tasks.models[k];
                 base.renderTask(task);
             }
-        },
-        renderTask: function (task) {
-            var base = this;
-            var events = task.getEvents();
+
+            var events = SmartBlocks.Blocks.Time.Data.events;
             var now = new Date();
-            if (events.length > 0) {
-                for (var j in events) {
-                    if (events[j]) {
-                        var start = events[j].getStart();
+
+            if (events.models.length > 0) {
+                for (var j in events.models) {
+                    if (events.models[j]) {
+                        var event = events.models[j];
+                        var start = event.getStart();
                         var day = start.getDate();
                         var month = start.getMonth();
                         var year = start.getFullYear();
                         if (now.getDate() == day && now.getMonth() == month && now.getFullYear() == year) {
-                            var task_view = new TaskView({model: task});
-                            base.$el.find(".today_tasks").append(task_view.$el);
+                            var task_view = new EventView({model: event});
+                            base.$el.find(".today_events").append(task_view.$el);
                             task_view.init();
-                        } else if (now.getDate() == day + 1 && now.getMonth() == month && now.getFullYear() == year) {
-                            var task_view = new TaskView({model: task});
-                            base.$el.find(".tomorrow_tasks").append(task_view.$el);
+                        } else if (now.getDate() + 1 == day && now.getMonth() == month && now.getFullYear() == year) {
+                            var task_view = new EventView({model: event});
+                            base.$el.find(".tomorrow_events").append(task_view.$el);
                             task_view.init();
                         } else if (now < start) {
-                            var task_view = new TaskView({model: task});
-                            base.$el.find(".later_tasks").append(task_view.$el);
+                            var task_view = new EventView({model: event});
+                            base.$el.find(".later_events").append(task_view.$el);
                             task_view.init();
                         }
                     }
 
                 }
             }
+
+
+        },
+        renderTask: function (task) {
+            var base = this;
+
             var task_view = new TaskView({model: task});
-            base.$el.find(".unplanned_tasks").append(task_view.$el);
+            base.$el.find(".tasks_list").append(task_view.$el);
             task_view.init();
         },
         registerEvents: function () {
@@ -103,6 +167,21 @@ define([
                     SmartBlocks.Blocks.TaskManagement.Data.tasks.add(task);
 
                 }
+                base.$el.find(".task_name").val("");
+            });
+
+            base.$el.delegate(".task_name", "keyup", function (e) {
+                if (e.keyCode == 13) {
+                    var name = base.$el.find(".task_name").val();
+                    if (name != "") {
+                        var task = new SmartBlocks.Blocks.TaskManagement.Models.Task();
+                        task.set("name", name);
+                        task.save();
+                        SmartBlocks.Blocks.TaskManagement.Data.tasks.add(task);
+                    }
+                    base.$el.find(".task_name").val("");
+                }
+
 
             });
 
@@ -110,6 +189,9 @@ define([
                 base.renderTask(task);
             });
 
+            SmartBlocks.Blocks.Time.Data.events.on("change", function () {
+                base.renderTasks();
+            });
 
         }
     });
