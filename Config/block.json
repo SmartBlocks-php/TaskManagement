@@ -1,0 +1,29 @@
+{
+    "name": "TaskManagement",
+    "token": "task_management",
+    "restricted_to": "user",
+    "types": [
+        {
+            "model_name": "Task",
+            "collection_name": "Tasks",
+            "plural": "tasks",
+            "ws_origin": "/TaskManagement/Tasks",
+            "model_location": "TaskManagement/Models/Task",
+            "collection_location": "TaskManagement/Collections/Tasks"
+        }
+    ],
+    "apps": [
+        {
+            "name": "TaskViewer",
+            "token": "task_viewer",
+            "description": "Your tasks",
+            "link": "#task_viewer",
+            "logo_url": "/images/icons/user.png",
+            "block_token": "task_management",
+            "entry_point": "launch_viewer",
+            "routing": {
+
+            }
+        }
+    ]
+}

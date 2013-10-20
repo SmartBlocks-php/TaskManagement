@@ -1,0 +1,90 @@
+.tasks_viewer {
+  .events_list {
+    min-height: 200px;
+    &.element_over {
+      background: rgba(255, 240, 151, 0.48);
+    }
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+  }
+
+  .events_container {
+    margin-left: 320px;
+
+  }
+
+  .header {
+    height: 50px;
+    line-height: 50px;
+    padding:0;
+    background: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+    .page_title {
+      font-size: 30px;
+    }
+  }
+
+.add_section {
+  padding: 15px;
+  padding-top: 0;
+  background: rgba(255, 255, 255, 0.2);
+  .add_task_button {
+    display: block;
+    float:right;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-right: 5px;
+    margin-top: 8px;
+    background: url(/TaskManagement/Resources/plus.png);
+    &:hover {
+      background: url(/TaskManagement/Resources/plus.png) 0 15px;
+    }
+  }
+
+  .adder_tick {
+    display: block;
+    float:left;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-left: 10px;
+    margin-top: 8px;
+    background: url(/TaskManagement/Resources/tick.png);
+  }
+
+  .task_name {
+    width: 190px;
+    margin-top: 5px;
+    margin-left: 15px;
+    padding: 5px;
+    background: rgba(255,255,255,0.5);
+    border: none;
+  }
+}
+
+
+  .tasks_container {
+    float: left;
+    width: 300px;
+  }
+
+  .tasks_list {
+    padding: 15px;
+    padding-bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .date_events {
+    float:left;
+    width: 250px;
+    margin-right: 20px;
+  }
+
+  .tasks_viewer_content {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+  }
+}
