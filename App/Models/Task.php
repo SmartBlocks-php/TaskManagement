@@ -39,6 +39,7 @@ class Task extends \Model
     public function __construct()
     {
         $this->data = json_encode(array());
+        $this->description = "";
     }
 
     public function getId()

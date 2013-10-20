@@ -8,12 +8,13 @@ define([
     var main = {
         init: function () {
             var base = this;
+
         },
-        launch_tasks_viewer: function (app) {
+        launch_viewer: function (app) {
             var base = this;
             var tasks_viewer = new TasksViewer();
             SmartBlocks.Methods.render(tasks_viewer.$el);
-            tasks_viewer.init();
+            tasks_viewer.init(app);
         }
     };
 
