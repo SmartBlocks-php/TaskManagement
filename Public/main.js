@@ -1,7 +1,7 @@
 define([
     'jquery',
     'underscore',
-    'Backbone',
+    'backbone',
     './Apps/TasksViewer/Views/tasks_viewer'
 ], function ($, _, Backbone, TasksViewer) {
 
