@@ -33,6 +33,16 @@ define([
                 task: base.task
             });
             base.$el.html(template);
+            for (var k in SmartBlocks.Blocks.TaskManagement.Main.task_main_info) {
+                var func = SmartBlocks.Blocks.TaskManagement.Main.task_main_info[k];
+                base.$el.find(".appended_info").append(func(base.task));
+            }
+            for (var k in SmartBlocks.Blocks.TaskManagement.Main.task_appended_info) {
+                var func = SmartBlocks.Blocks.TaskManagement.Main.task_appended_info[k];
+                base.$el.find(".all_info").append('<div>' + func(base.task) + '</div>');
+            }
+
+
         },
         registerEvents: function () {
             var base = this;
@@ -75,6 +85,16 @@ define([
                         base.$el.remove();
                     });
                 }
+            });
+
+            base.$el.click(function () {
+                if (base.$el.find(".all_info").html() != "") {
+                    if (!$(this).hasClass("expanded")) {
+                        $(".task.expanded").removeClass("expanded");
+                    }
+                    base.$el.toggleClass("expanded");
+                }
+
             });
         }
     });

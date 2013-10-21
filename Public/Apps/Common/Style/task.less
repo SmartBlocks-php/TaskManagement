@@ -1,5 +1,6 @@
 .task {
   cursor: pointer;
+  position:relative;
 
   height: 30px;
   line-height: 30px;
@@ -40,4 +41,28 @@
   .name {
     padding-left: 20px;
   }
+
+  .all_info {
+    position: absolute;
+    top: 30px;
+    z-index: 1000;
+    width: ~"calc(100% - 40px)";
+    left: 0px;
+    padding: 20px;
+    background: rgba(255,255,255,0.8);
+    display: none;
+
+  }
+  &.expanded {
+    .all_info {
+      display: block;
+
+    }
+  }
+  &:hover {
+    .all_info {
+      left: -5px;
+    }
+  }
+
 }
