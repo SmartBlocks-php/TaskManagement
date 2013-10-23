@@ -42,7 +42,11 @@ define([
                 base.$el.find(".all_info").append('<div>' + func(base.task) + '</div>');
             }
 
-
+            if (base.task.get("archived")) {
+                base.$el.addClass("archived");
+            } else {
+                base.$el.removeClass("archived");
+            }
         },
         registerEvents: function () {
             var base = this;
@@ -77,7 +81,6 @@ define([
                     var events = base.task.getEvents();
                     for (var k in events) {
                         events[k].destroy();
-                        console.log("yup");
                     }
 
                     base.task.destroy();
@@ -85,6 +88,16 @@ define([
                         base.$el.remove();
                     });
                 }
+            });
+
+            base.$el.delegate(".archive_button", 'click', function () {
+                var elt = $(this);
+                if (!base.task.get("archived")) {
+                    base.task.set("archived", true);
+                } else {
+                    base.task.set("archived", false);
+                }
+                base.task.save();
             });
 
             base.$el.click(function () {

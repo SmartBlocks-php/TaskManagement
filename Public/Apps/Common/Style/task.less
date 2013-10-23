@@ -38,6 +38,27 @@
     }
   }
 
+  .archive_button {
+    display: block;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-right: 5px;
+    background: url(/TaskManagement/Resources/archive.png) 0 0;
+    float: right;
+    &:hover {
+      background: url(/TaskManagement/Resources/archive.png) 0 15px;
+    }
+  }
+
+  &.archived {
+    .archive_button {
+      background: url(/TaskManagement/Resources/archive.png) 0 15px;
+    }
+  }
+
+
   .name {
     padding-left: 20px;
   }

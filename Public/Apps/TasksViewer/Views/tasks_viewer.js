@@ -108,7 +108,9 @@ define([
         },
         renderTasks: function () {
             var base = this;
-            var tasks = SmartBlocks.Blocks.TaskManagement.Data.tasks;
+            var tasks = new SmartBlocks.Blocks.TaskManagement.Collections.Tasks(SmartBlocks.Blocks.TaskManagement.Data.tasks.filter(function (task) {
+                return !task.get("archived") || base.$el.find(".show_archived").is(":checked");
+            }));
             base.$el.find(".events_list").html("");
             base.$el.find(".tasks_list").html("");
 
@@ -168,6 +170,10 @@ define([
 
                 }
                 base.$el.find(".task_name").val("");
+            });
+
+            base.$el.delegate(".show_archived", 'change', function () {
+                base.renderTasks();
             });
 
             base.$el.delegate(".task_name", "keyup", function (e) {
