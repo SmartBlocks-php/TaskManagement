@@ -199,6 +199,10 @@ define([
                 base.renderTasks();
             });
 
+            SmartBlocks.Blocks.TaskManagement.Data.tasks.on("change", function () {
+                base.renderTasks();
+            });
+
         }
     });
 

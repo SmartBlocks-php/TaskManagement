@@ -16,13 +16,49 @@
   .header {
     height: 50px;
     line-height: 50px;
-    padding:0;
-    background: rgba(255,255,255,0.5);
+    padding: 0;
+    background: rgba(255, 255, 255, 0.5);
     margin-bottom: 20px;
     .page_title {
       font-size: 30px;
     }
   }
+
+
+  .tasks_container {
+    float: left;
+    width: 300px;
+  }
+
+  .tasks_list {
+    padding: 15px;
+    padding-bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .date_events {
+    float: left;
+    width: 250px;
+    margin-right: 20px;
+  }
+
+  .tasks_viewer_content {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+  }
+
+  .show_archived_container {
+    text-align: right;
+    display: block;
+    cursor: pointer;
+  }
+
+
+
+
+}
 
 .add_section {
   padding: 15px;
@@ -30,7 +66,7 @@
   background: rgba(255, 255, 255, 0.2);
   .add_task_button {
     display: block;
-    float:right;
+    float: right;
     width: 15px;
     height: 15px;
     overflow: hidden;
@@ -60,37 +96,5 @@
     padding: 5px;
     background: rgba(255,255,255,0.5);
     border: none;
-  }
-}
-
-
-  .tasks_container {
-    float: left;
-    width: 300px;
-  }
-
-  .tasks_list {
-    padding: 15px;
-    padding-bottom: 0;
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .date_events {
-    float:left;
-    width: 250px;
-    margin-right: 20px;
-  }
-
-  .tasks_viewer_content {
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    margin: auto;
-  }
-
-  .show_archived_container {
-    text-align: right;
-    display: block;
-    cursor: pointer;
   }
 }
