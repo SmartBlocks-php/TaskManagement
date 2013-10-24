@@ -1,8 +1,11 @@
 <div>
-    <a href="javascript:void(0);" class="tick <% if (task.get('done')) { %>checked<% } %>"></a><span class="name"><%= task.get('name') %></span>
+    <a href="javascript:void(0);"
+       class="tick fa fa-check checkable-icon <% if (task.get('done')) { %>checked<% } %>"></a><span class="name"><%= task.get('name') %></span>
     <span class="appended_info"></span>
 
-    <a href="javascript:void(0);" class="delete_button" title="Delete"></a>
-    <a href="javascript:void(0);" class="archive_button" title="Archive"></a>
+    <div class="actions">
+        <a href="javascript:void(0);" class="archive_button fa fa-archive checkable-icon" title="Archive"></a>
+        <a href="javascript:void(0);" class="delete_button fa fa-minus clickable-icon" title="Delete"></a>
+    </div>
     <div class="all_info"></div>
 </div>

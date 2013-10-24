@@ -109,7 +109,7 @@ define([
         renderTasks: function () {
             var base = this;
             var tasks = new SmartBlocks.Blocks.TaskManagement.Collections.Tasks(SmartBlocks.Blocks.TaskManagement.Data.tasks.filter(function (task) {
-                return !task.get("archived") || base.$el.find(".show_archived").is(":checked");
+                return !task.get("archived") || base.$el.find(".show_archived").hasClass("checked");
             }));
             base.$el.find(".events_list").html("");
             base.$el.find(".tasks_list").html("");
@@ -172,7 +172,18 @@ define([
                 base.$el.find(".task_name").val("");
             });
 
-            base.$el.delegate(".show_archived", 'change', function () {
+            base.$el.delegate(".show_archived_container", 'click', function () {
+                var elt = $(this).find(".show_archived");
+                elt.toggleClass("checked");
+
+                if (elt.hasClass("checked")) {
+                    elt.addClass("fa-check-square");
+                    elt.removeClass("fa-square-o");
+                } else {
+                    elt.removeClass("fa-check-square");
+                    elt.addClass("fa-square-o");
+                }
+
                 base.renderTasks();
             });
 

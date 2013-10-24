@@ -49,9 +49,9 @@ define([
             }
 
             if (base.task.get("archived")) {
-                base.$el.addClass("archived");
+                base.$el.find('.archive_button').addClass("checked");
             } else {
-                base.$el.removeClass("archived");
+                base.$el.find('.archive_button').removeClass("checked");
             }
 
             if (base.$el.offset().left < $("body").width() / 2) {
