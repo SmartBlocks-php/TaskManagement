@@ -11,16 +11,9 @@ define([
             var base = this;
             var events = [];
             if (SmartBlocks.Blocks.Time) {
-                if (base.get("events")) {
-                    var event_ids = base.get("events");
-                    for (var k in event_ids) {
-                        var event = SmartBlocks.Blocks.Time.Data.events.get(event_ids[k]);
-                        if (event) {
-                            events.push(event);
-                        }
-
-                    }
-                }
+                events = SmartBlocks.Blocks.Time.Data.events.filter(function (event) {
+                    return event.get('task_id') == base.get('id');
+                });
             }
 
             return events;
@@ -41,6 +34,37 @@ define([
             if (index !== -1) {
                 delete base.get("events")[index];
             }
+        },
+        getDuration: function (start, end) {
+            var base = this;
+            var events = base.getEvents();
+            var duration = 0;
+            for (var k in events) {
+                var event = events[k];
+                duration += event.getDuration(start, end);
+
+            }
+            return duration;
+        },
+        getDoneDuration: function (start, end) {
+            var base = this;
+            var events = base.getEvents();
+            var duration = 0;
+            for (var k in events) {
+                var event = events[k];
+                duration += event.getDoneDuration(start, end);
+            }
+            return duration;
+        },
+        getLeftDuration: function (start, end) {
+            var base = this;
+            var events = base.getEvents();
+            var duration = 0;
+            for (var k in events) {
+                var event = events[k];
+                duration += event.getLeftDuration(start, end);
+            }
+            return duration;
         }
     });
     return Model;

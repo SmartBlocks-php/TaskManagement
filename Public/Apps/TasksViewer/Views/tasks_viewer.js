@@ -44,6 +44,7 @@ define([
                         var event = new SmartBlocks.Blocks.Time.Models.Event();
                         event.set("name", task.get('name'));
                         event.set("description", "A task to do");
+                        event.set('task_id', task.get('id'));
                         var now = new Date();
                         if (recipient.hasClass("tomorrow_events")) {
                             now.setDate(now.getDate() + 1);
@@ -60,7 +61,6 @@ define([
                         SmartBlocks.Blocks.Time.Data.events.add(event);
                         event.save({}, {
                             success: function () {
-                                task.addEvent(event);
                                 base.renderTasks();
                             }
                         });
