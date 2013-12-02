@@ -45,6 +45,7 @@ define([
                         event.set("name", task.get('name'));
                         event.set("description", "A task to do");
                         event.set('task_id', task.get('id'));
+
                         var now = new Date();
                         if (recipient.hasClass("tomorrow_events")) {
                             now.setDate(now.getDate() + 1);
@@ -60,8 +61,15 @@ define([
                         event.set("all_day", true);
                         SmartBlocks.Blocks.Time.Data.events.add(event);
                         event.save({}, {
-                            success: function () {
-                                base.renderTasks();
+                            success: function (event) {
+                                console.log(event);
+                                task.addEvent(event);
+                                task.save({}, {
+                                    success: function () {
+                                        base.renderTasks();
+                                    }
+                                });
+
                             }
                         });
                     }

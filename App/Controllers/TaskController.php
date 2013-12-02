@@ -8,88 +8,47 @@
 
 namespace TaskManagement;
 
-class TaskController extends \Controller
-{
-    public function before_filter()
-    {
+class TaskController extends \Controller {
+    public function before_filter() {
         \User::restrict();
     }
 
-
-    public function index()
-    {
+    public function index() {
         $em = \Model::getEntityManager();
         $qb = $em->createQueryBuilder();
 
-        $qb->select('e')->from('\TaskManagement\Task', 'e')->where('e.owner = :user')
-            ->setParameter('user', \User::current_user());
+        $qb->select('e')->from('\TaskManagement\Task', 'e')
+           ->leftJoin('e.participants', 'p')
+           ->where('e.owner = :user OR p = :user')
+           ->setParameter('user', \User::current_user());
 
         $results = $qb->getQuery()->getResult();
         $response = array();
-        foreach ($results as $result)
-        {
+        foreach ($results as $result) {
             $response[] = $result->toArray();
         }
         $this->return_json($response);
     }
 
-    private function createOrUpdate($data)
-    {
-        if (isset($data["id"]))
-            $task = Task::find($data["id"]);
-        else
-            $task = null;
-
-        if (!is_object($task))
-        {
-            $task = new Task();
-        }
-
-        $task->setOwner(\User::current_user());
-
-        $task->setName($data["name"]);
-        unset($data["name"]);
-        if (isset($data["description"]))
-        {
-            $task->setDescription($data["description"]);
-            unset($data["description"]);
-        }
-
-        unset($data["owner"]);
-        unset($data["id"]);
-
-        $event_data = $data;
-        $data_array = $task->getData();
-
-        if (is_array($event_data))
-        {
-            foreach ($event_data as $key => $d)
-            {
-                $data_array[$key] = $d;
+    public function show($params = array()) {
+        if (isset($params["id"])) {
+            $task = \TaskManagement\Task::find($params["id"]);
+            if (is_object($task)) {
+                $this->return_json($task->toArray());
+            } else {
+                $this->json_error("This task does not exist", 404);
             }
-
+        } else {
+            $this->json_error("This task does not exist", 404);
         }
-
-        foreach ($data_array as $key => $d)
-        {
-            if (!isset($event_data[$key])) {
-                unset($data_array[$key]);
-            }
-        }
-        $task->setData($data_array);
-        $task->save();
-
-        return $task->toArray();
     }
 
-    public function create()
-    {
+    public function create() {
         $data = $this->getRequestData();
-        $this->return_json($this->createOrUpdate($data));
+        $this->return_json(\TaskManagement\Business\Task::createOrUpdate($data)->toArray());
     }
 
-    public function update($data = array())
-    {
+    public function update($data = array()) {
 
         $id = $data["id"];
         $data = $this->getRequestData();
@@ -98,43 +57,32 @@ class TaskController extends \Controller
             $task = Task::find($data["id"]);
         else
             $task = null;
-        if (is_object($task))
-        {
-            if ($task->getOwner() == \User::current_user())
-            {
-                $this->return_json($this->createOrUpdate($data));
+        if (is_object($task)) {
+            if ($task->getOwner() == \User::current_user() || $task->getParticipants()->contains(\User::current_user())) {
+                $this->return_json(\TaskManagement\Business\Task::createOrUpdate($data)->toArray());
             }
-            else
-            {
+            else {
                 $this->json_error("This task does not exist", 404);
             }
         }
-        else
-        {
+        else {
             $this->json_error("This task does not exist", 404);
         }
     }
 
-
-    public function destroy($data = array())
-    {
+    public function destroy($data = array()) {
         $task = Task::find($data["id"]);
-        if (is_object($task))
-        {
-            if ($task->getOwner() == \User::current_user())
-            {
+        if (is_object($task)) {
+            if ($task->getOwner() == \User::current_user() || $task->getParticipants()->contains(\User::current_user())) {
                 $task->delete();
                 $this->json_message("Successfully deleted task");
             }
-            else
-            {
+            else {
                 $this->json_error("This task does not exist", 404);
             }
         }
-        else
-        {
+        else {
             $this->json_error("This event does not exist", 404);
         }
     }
-
 }
