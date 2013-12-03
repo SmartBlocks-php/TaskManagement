@@ -45,34 +45,43 @@ define([
 
             SmartBlocks.events.on("ws_notification", function (message) {
                 if (!message.notifier || message.notifier != SmartBlocks.current_user.get('id')) {
-                    if (message.block == "TaskManagement" && message.action == "saved_task") {
-                        var task_array = message.task;
+                    if (message.block == "TaskManagement") {
+                        if (message.action == "saved_task") {
+                            var task_array = message.task;
 
-                        var task = SmartBlocks.Blocks.TaskManagement.Data.tasks.get(task_array.id);
-                        if (task) {
-                            task.fetch();
-                        } else {
-                            var task = new SmartBlocks.Blocks.TaskManagement.Models.Task(task_array);
-                            task.fetch({
-                                success: function () {
-                                    SmartBlocks.Blocks.TaskManagement.Data.tasks.add(task);
-                                }
-                            });
+                            var task = SmartBlocks.Blocks.TaskManagement.Data.tasks.get(task_array.id);
+                            if (task) {
+                                task.fetch();
+                            } else {
+                                var task = new SmartBlocks.Blocks.TaskManagement.Models.Task(task_array);
+                                task.fetch({
+                                    success: function () {
+                                        SmartBlocks.Blocks.TaskManagement.Data.tasks.add(task);
+                                    }
+                                });
+                            }
+                            console.log("updated_task");
+                        } else if (message.action == "deleted_task") {
+                            var task_array = message.task;
+                            SmartBlocks.Blocks.TaskManagement.Data.tasks.remove(task_array.id);
+                            console.log('removed task ' + task_array.id, SmartBlocks.Blocks.TaskManagement.Data.tasks.models);
                         }
-                        console.log("updated_task");
+
                     }
                 }
             });
+            if (SmartBlocks.Blocks.Time.Data.events) {
+                SmartBlocks.Blocks.Time.Data.events.on("sync", function (event) {
+                    notify_event_changed(event, "saved_task");
+                });
+                SmartBlocks.Blocks.Time.Data.events.on("add", function (event) {
+                    notify_event_changed(event, "saved_task");
+                });
+                SmartBlocks.Blocks.Time.Data.events.on("remove", function (event) {
+                    notify_event_changed(event, "deleted_task");
+                });
+            }
 
-            SmartBlocks.Blocks.Time.Data.events.on("sync", function (event) {
-                notify_event_changed(event, "saved_task");
-            });
-            SmartBlocks.Blocks.Time.Data.events.on("add", function (event) {
-                notify_event_changed(event, "saved_task");
-            });
-            SmartBlocks.Blocks.Time.Data.events.on("remove", function (event) {
-                notify_event_changed(event, "deleted_task");
-            });
 
         },
         addTaskMainInfo: function (func) {

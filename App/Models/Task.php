@@ -159,4 +159,22 @@ class Task extends \Model {
             );
         }
     }
+
+    function delete() {
+        foreach ($this->getParticipants() as $participant) {
+            \NodeDiplomat::sendMessage($participant->getSessionId(), array(
+                    "block" => "TaskManagement",
+                    "action" => "deleted_task",
+                    "task" => $this->toArray()
+                )
+            );
+        }
+        \NodeDiplomat::sendMessage($this->getOwner()->getSessionId(), array(
+                "block" => "TaskManagement",
+                "action" => "deleted_task",
+                "task" => $this->toArray()
+            )
+        );
+        parent::delete();
+    }
 }
