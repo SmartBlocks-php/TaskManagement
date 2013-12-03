@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'text!../Templates/task.html',
+    'underscore_string',
     'jqueryui'
-], function ($, _, Backbone, task_template) {
+], function ($, _, Backbone, task_template, _s) {
     var View = Backbone.View.extend({
         tagName: "div",
         className: "task",
@@ -20,7 +21,11 @@ define([
             base.render();
 
             base.$el.draggable({
-                revert: true
+                revert: false,
+                helper: function() {
+                    //debugger;
+                    return $("<div></div>").append(base.model.get('name'));
+                }
             });
             base.registerEvents();
 
@@ -30,13 +35,19 @@ define([
             base.$el.attr("data-id", base.task.get('id'));
             base.$el.attr('data-index', SmartBlocks.Blocks.TaskManagement.Data.tasks.models.indexOf(base.task));
             var template = _.template(task_template, {
-                task: base.task
+                task: base.task,
+                _s: _s
             });
             base.$el.html(template);
             base.$el.find(".all_info").removeClass("filled");
             for (var k in SmartBlocks.Blocks.TaskManagement.Main.task_main_info) {
                 var func = SmartBlocks.Blocks.TaskManagement.Main.task_main_info[k];
-                base.$el.find(".appended_info").append(func(base.task));
+                var text = func(base.task);
+                var name = base.model.get('name');
+                base.$el.find('.name').html(name);
+                if (text) {
+                    base.$el.find(".appended_info").append(text);
+                }
             }
             for (var k in SmartBlocks.Blocks.TaskManagement.Main.task_appended_info) {
 

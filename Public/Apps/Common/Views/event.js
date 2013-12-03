@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'text!../Templates/event.html',
-    'ContextMenuView'
-], function ($, _, Backbone, event_template, ContextMenu) {
+    'ContextMenuView',
+    'underscore_string'
+], function ($, _, Backbone, event_template, ContextMenu, _s) {
     var View = Backbone.View.extend({
         tagName: "div",
         className: "event_viewer",
@@ -31,7 +32,8 @@ define([
             var template = _.template(event_template, {
                 event: base.event,
                 start : base.event.getStart(),
-                end: base.event.getEnd()
+                end: base.event.getEnd(),
+                _s: _s
             });
             base.$el.html(template);
         },

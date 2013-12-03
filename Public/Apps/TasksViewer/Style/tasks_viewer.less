@@ -1,5 +1,7 @@
+@box-border: 1px black solid;
 .tasks_viewer {
-
+  height: 100%;
+  min-width: 1000px;
   .fa {
     font-size: 16px;
   }
@@ -11,11 +13,16 @@
     }
     background: rgba(255, 255, 255, 0.2);
     padding: 15px;
+    border-right: @box-border;
+    margin-top: 32px;
+    height: 100%;
+    overflow-y: auto;
   }
 
   .events_container {
-    margin-left: 320px;
-
+    margin-left: 25%;
+    width: 75%;
+    height: 100%;
   }
 
   .header {
@@ -32,26 +39,33 @@
 
   .tasks_container {
     float: left;
-    width: 300px;
+    width: 25%;
+    height: 100%;
   }
 
   .tasks_list {
     padding: 15px;
     padding-bottom: 0;
     background: rgba(255, 255, 255, 0.2);
+    border-right: @box-border;
+    overflow-y: auto;
+    height: ~"calc(100% - 104px)";
   }
 
   .date_events {
     float: left;
-    width: 250px;
-    margin-right: 20px;
+    width: 33.3333%;
+    height: ~"calc(100% - 55px)";
   }
 
   .tasks_viewer_content {
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
+//    width: -webkit-fit-content;
+//    width: -moz-fit-content;
+//    width: fit-content;
+    width: 100%;
+    height: ~"calc(100% - 70px)";
     margin: auto;
+
   }
 
   .show_archived_container {
@@ -70,6 +84,7 @@
   padding-left: 20px;
   padding-top: 0;
   background: rgba(255, 255, 255, 0.2);
+  border-right: @box-border;
   .add_task_button {
     font-size: 16px;
   }
@@ -92,5 +107,11 @@
     padding: 5px;
     background: rgba(255,255,255,0.5);
     border: none;
+  }
+  
+  @media (max-width: 1142px) {
+    .task_name {
+      width: ~"calc(100% - 52px)";
+    }
   }
 }
