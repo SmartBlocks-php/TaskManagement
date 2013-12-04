@@ -213,8 +213,15 @@ define([
             SmartBlocks.Blocks.TaskManagement.Data.tasks.on("add", function (task) {
                 base.renderTask(task);
             });
+            SmartBlocks.Blocks.TaskManagement.Data.tasks.on("remove", function (task) {
+                base.renderTasks();
+            });
 
             SmartBlocks.Blocks.Time.Data.events.on("change", function () {
+                base.renderTasks();
+            });
+
+            SmartBlocks.Blocks.Time.Data.events.on("remove", function () {
                 base.renderTasks();
             });
 
